@@ -20,3 +20,8 @@ defer func() {
 				panic(r)
 			}
 		}
+result.Close()
+	}()
+	result.Frob(input)
+	return nil
+}
