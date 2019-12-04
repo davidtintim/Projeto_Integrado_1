@@ -1,3 +1,5 @@
+package erratum
+
 func Use(o ResourceOpener, input string) (e error) {
 	result, err := o()
 	if err != nil {
