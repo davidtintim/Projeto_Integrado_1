@@ -3,11 +3,6 @@ package diffiehellman
 import (
 	"math/big"
 	"math/rand"
-package diffiehellman
-
-import (
-	"math/big"
-	"math/rand"
 	"time"
 )
 
