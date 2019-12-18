@@ -1,8 +1,8 @@
 // Diffie-Hellman-Merkle key exchange
 //
 // Step 1:   PrivateKey(p *big.Int) *big.Int
-// Step 2:   PublicKey(private, p *big.Int, g int64) *big.Int
-// Step 2.1: NewPair(p *big.Int, g int64) (private, public *big.Int)
+// Step 2:   PublicKey(private, p, *big.Int, g int64) *big.Int
+// Step 2.1: NewPair(p, *big.Int, g int64) (private, public *big.Int)
 // Step 3:   SecretKey(private1, public2, p *big.Int) *big.Int
 //
 // Private keys should be generated randomly.
@@ -83,7 +83,7 @@ func TestPrivateKey(t *testing.T) {
 	priv := func(p *big.Int) *big.Int {
 		a := PrivateKey(p)
 		if a.Cmp(_one) <= 0 || a.Cmp(p) >= 0 {
-			t.Fatalf("PrivateKey(%s) = %s, out of range (1, %s)", p.String(), a.String(), p.String())
+			t.Fatalf("PrivateKey(%d) = %d, out of range (1, %d)", p, a, p)
 		}
 		return a
 	}
@@ -94,12 +94,12 @@ func TestPrivateKey(t *testing.T) {
 		mb[priv(biggerTest.p).String()] = true
 	}
 	if len(ms) == 1 {
-		t.Fatalf("For prime %s same key generated every time.  "+
-			"Want random keys.", smallTest.p.String())
+		t.Fatalf("For prime %d same key generated every time.  "+
+			"Want random keys.", smallTest.p)
 	}
 	if len(mb) < 100 {
-		t.Fatalf("For prime %s duplicate keys generated.  "+
-			"Want unique keys.", biggerTest.p.String())
+		t.Fatal("For prime %d duplicate keys generated.  "+
+			"Want unique keys.", biggerTest.p)
 	}
 }
 
@@ -136,12 +136,12 @@ func TestNewPair(t *testing.T) {
 	p, g := biggerTest.p, biggerTest.g
 	test := func(a, A *big.Int) {
 		if a.Cmp(_one) <= 0 || a.Cmp(p) >= 0 {
-			t.Fatalf("NewPair(%s, %d) private key = %s, out of range (1, %s)",
-				p.String(), g, a.String(), p.String())
+			t.Fatalf("NewPair(%d, %d) private key = %d, out of range (1, %d)",
+				p, g, a, p)
 		}
 		if A.Cmp(_one) <= 0 || A.Cmp(p) >= 0 {
-			t.Fatalf("NewPair(%s, %d) public key = %s, out of range (1, %s)",
-				p.String(), g, A.String(), p.String())
+			t.Fatalf("NewPair(%d, %d) public key = %d, out of range (1, %d)",
+				p, g, A, p)
 		}
 	}
 	a, A := NewPair(p, g)
