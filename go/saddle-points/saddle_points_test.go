@@ -22,6 +22,7 @@ func TestSaddle(t *testing.T) {
 	for _, test := range tests {
 		m, err := New(test.m)
 		if err != nil {
+			var _ error = err
 			t.Fatalf("TestSaddle needs working New.  "+
 				"New(%s) returned %s.  Error not expected.",
 				test.m, err)
